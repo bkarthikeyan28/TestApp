@@ -24,15 +24,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
     <WebView
         android:id="@+id/webView"
-        android:layout_marginTop="287px"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/white"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         />
 
 </RelativeLayout>

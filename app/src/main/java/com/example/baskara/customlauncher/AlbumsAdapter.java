@@ -92,7 +92,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public WeatherViewHolder(View view) {
             super(view);
             cityField = view.findViewById(R.id.city_field);
-            updatedField = view.findViewById(R.id.updated_field);
             detailsField = view.findViewById(R.id.details_field);
             currentTemperatureField = view.findViewById(R.id.current_temperature_field);
         }
@@ -218,7 +217,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((WeatherViewHolder) holder).cityField.setText(data.getCityField());
             ((WeatherViewHolder) holder).currentTemperatureField.setText(data.getCurrentTemperatureField());
             ((WeatherViewHolder) holder).detailsField.setText(data.getDetailsField());
-            ((WeatherViewHolder) holder).updatedField.setText(data.getUpdatedField());
         }
     }
 

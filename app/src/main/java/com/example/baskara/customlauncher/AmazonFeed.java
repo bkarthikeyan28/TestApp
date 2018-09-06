@@ -2,6 +2,9 @@ package com.example.baskara.customlauncher;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -84,10 +87,16 @@ public class AmazonFeed extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setComponent(new ComponentName("com.amazon.dee.app", "com.amazon.dee.app" +
-                        ".ui.voice.VoiceActivity"));
-                startActivity(intent);
+                if(checkAppPresent("com.amazon.dee.app")) {
+                    Intent intent = new Intent();
+                    intent.setComponent(new ComponentName("com.amazon.dee.app", "com.amazon.dee.app" +
+                            ".ui.voice.VoiceActivity"));
+                    startActivity(intent);
+                } else {
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse
+                            ("market://details?id=com.amazon.avod.thirdpartyclient"));
+                    startActivity(marketIntent);
+                }
             }
         });
 
@@ -99,9 +108,7 @@ public class AmazonFeed extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         new GetArticleData().execute();
-
         return view;
 
     }
@@ -241,6 +248,20 @@ public class AmazonFeed extends Fragment {
             adapter.notifyDataSetChanged();
             pb.setVisibility(View.GONE);
         }
+    }
+
+    private boolean checkAppPresent(String packageName) {
+        List<ApplicationInfo> packages;
+        PackageManager pm;
+
+        pm = this.getContext().getPackageManager();
+        PackageInfo info;
+        try {
+            info = pm.getPackageInfo(packageName,PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     /**

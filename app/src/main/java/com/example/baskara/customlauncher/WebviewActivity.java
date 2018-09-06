@@ -1,5 +1,6 @@
 package com.example.baskara.customlauncher;
 
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 public class WebviewActivity extends AppCompatActivity {
 
@@ -20,6 +22,9 @@ public class WebviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        final ProgressBar pb = findViewById(R.id.progressBar);
+        pb.setVisibility(View.VISIBLE);
         toolbar.setTitle("Articles");
         setSupportActionBar(toolbar);
 
@@ -37,10 +42,27 @@ public class WebviewActivity extends AppCompatActivity {
         webView.getSettings().setAppCacheEnabled( true );
         webView.getSettings().setJavaScriptEnabled( true );
         webView.getSettings().setCacheMode( WebSettings.LOAD_DEFAULT );
-        webView.setWebViewClient(new WebViewClient() {@Override public void onReceivedSslError
-                (WebView v, SslErrorHandler handler, SslError er){ handler.proceed(); }});
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView v, SslErrorHandler handler, SslError er) {
+                handler.proceed();
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                pb.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                pb.setVisibility(View.INVISIBLE);
+            }
+
+
+        });
         webView.loadUrl(url);
 
     }
+
 
 }
