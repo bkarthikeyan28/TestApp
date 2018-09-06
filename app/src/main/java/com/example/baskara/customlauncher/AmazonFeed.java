@@ -129,12 +129,16 @@ public class AmazonFeed extends Fragment {
 
     private class GetArticleData extends AsyncTask<Void, Void, Void> {
 
-        final private String url = "https://brxj3qfbs6.execute-api.us-west-2.amazonaws.com/Beta?q=TEST";
+        final private String urlArticle = "https://brxj3qfbs6.execute-api.us-west-2.amazonaws" +
+                ".com/Beta?q=TEST";
+        final private String urlMovies = "https://6e45f4em8g.execute-api.us-east-1.amazonaws.com/beta/stories/video";
+        final private String urlMusic = "";
+
 
         @Override
         protected Void doInBackground(Void... voids) {
             HttpHandler httpHandler = new HttpHandler();
-            String responseArticle = httpHandler.makeServiceCall(url);
+            String responseArticle = httpHandler.makeServiceCall(urlArticle);
 
             if (responseArticle != null) {
                 try {
@@ -144,7 +148,7 @@ public class AmazonFeed extends Fragment {
 
                     if (count != 0) {
                         JSONArray list = (JSONArray) successHit.getJSONArray("hit");
-                        for (int i = 0; i < list.length(); i++) {
+                        for(int i = 4; i < list.length(); i++) {
                             JSONObject articleJSON = ((JSONObject) list.get(i)).getJSONObject
                                     ("fields");
                             String title = articleJSON.getString("title");
@@ -175,6 +179,32 @@ public class AmazonFeed extends Fragment {
                 e.printStackTrace();
             }
 
+            String responseMovies = httpHandler.makeServiceCall(urlMovies);
+
+            if(responseMovies != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseMovies);
+                    int count = jsonObject.getInt("Count");
+
+                    if(count != 0) {
+                        JSONArray list = (JSONArray)jsonObject.getJSONArray("Items");
+                        for(int i = 0; i < count; i++) {
+                            String imageURI = ((JSONObject)list.get(i)).getJSONObject
+                                    ("imageurl").getString("S");
+                            String title = ((JSONObject)list.get(i)).getJSONObject("title")
+                                    .getString("S");
+                            String asin = (((JSONObject) list.get(i)).getJSONObject
+                                    ("redirecturl")).getString("S");
+
+                            Video video = new Video(title, imageURI, asin);
+                            albumList.add(video);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
             return null;
         }
