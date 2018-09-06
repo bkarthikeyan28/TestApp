@@ -37,6 +37,10 @@
             android:name=".AppDrawer"
             android:label="@string/title_activity_app_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WebviewActivity"
+            android:label="@string/title_activity_webview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

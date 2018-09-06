@@ -1,6 +1,7 @@
 package com.example.baskara.customlauncher;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -69,7 +70,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         if(holder instanceof ArticleViewHolder) {
-            Article data = (Article)dataList.get(position);
+            final Article data = (Article)dataList.get(position);
             ((ArticleViewHolder) holder).title.setText(data.getTitle());
             ((ArticleViewHolder) holder).description.setText(data.getDescription());
 
@@ -81,7 +82,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, "Tapped", Toast.LENGTH_LONG);
+                    Intent intent = new Intent(mContext, WebviewActivity.class);
+                    intent.putExtra("asin", data.getAsin());
+                    mContext.startActivity(intent);
                 }
             });
 
