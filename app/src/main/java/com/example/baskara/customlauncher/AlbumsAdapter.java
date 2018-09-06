@@ -1,6 +1,10 @@
 package com.example.baskara.customlauncher;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -13,116 +17,84 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Glide.*;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Random;
 
-public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
+public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private List<Album> albumList;
+    private List<Data> dataList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, count;
-        public ImageView thumbnail, overflow;
 
-        public MyViewHolder(View view) {
+    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+        public ImageView thumbnail;
+        public TextView title, description;
+
+        public ArticleViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            count = (TextView) view.findViewById(R.id.count);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-           overflow = (ImageView) view.findViewById(R.id.overflow);
+            title = view.findViewById(R.id.title);
+            description = view.findViewById(R.id.description);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            title.setTypeface(Typeface.DEFAULT_BOLD);
+            title.setTextSize(20);
+            description.setTextSize(15);
         }
     }
 
 
-    public AlbumsAdapter(Context mContext, List<Album> albumList) {
+    public AlbumsAdapter(Context mContext, List<Data> dataList) {
         this.mContext = mContext;
-        this.albumList = albumList;
+        this.dataList = dataList;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.album_card, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new MyViewHolder(itemView);
+        View itemView = null;
+        if(viewType == 0) {
+             itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.article_card, parent, false);
+            return new ArticleViewHolder(itemView);
+        }
+
+        return new ArticleViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Album album = albumList.get(position);
-        holder.title.setText(album.getName());
-        holder.count.setText(album.getNumOfSongs() + " songs");
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
-        // loading album cover using Glide library
-        Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
+        if(holder instanceof ArticleViewHolder) {
+            Article data = (Article)dataList.get(position);
+            ((ArticleViewHolder) holder).title.setText(data.getTitle());
+            ((ArticleViewHolder) holder).description.setText(data.getDescription());
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
-    }
+            Glide.with(mContext)
+                    .load(data.getThumbnail())
+                    .into(((ArticleViewHolder) holder).thumbnail);
 
-    /**
-     * Showing popup menu when tapping on 3 dots
-     */
-    private void showPopupMenu(View view) {
-        // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_album, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
-        popup.show();
-    }
 
-    /**
-     * Click listener for popup menu items
-     */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mContext, "Tapped", Toast.LENGTH_LONG);
+                }
+            });
 
-        public MyMenuItemClickListener() {
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.action_play_next:
-                    Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
-                    return true;
-                default:
-            }
-            return false;
         }
     }
 
-    public void change() {
-        albumList.clear();
-        int[] covers = new int[]{
-                R.drawable.album1,
-                R.drawable.album2,
-                R.drawable.album3,
-                R.drawable.album4,
-                R.drawable.album5,
-                R.drawable.album6,
-                R.drawable.album7,
-                R.drawable.album8,
-                R.drawable.album9,
-                R.drawable.album10,
-                R.drawable.album11};
-        int i = Math.abs(new Random().nextInt(50)) % 11;
-        Album a = new Album("True Romance", 13, covers[i]);
-        albumList.add(a);
-        this.notifyDataSetChanged();
+    @Override
+    public int getItemViewType(int position) {
+        return dataList.get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return albumList.size();
+        return dataList.size();
     }
 }

@@ -1,23 +1,23 @@
 package com.example.baskara.customlauncher;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class AmazonFeed extends Fragment {
 
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
-    private List<Album> albumList;
+    private List<Data> albumList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,33 +54,9 @@ public class AmazonFeed extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AmazonFeed.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AmazonFeed newInstance(String param1, String param2) {
-        AmazonFeed fragment = new AmazonFeed();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
     }
 
     @Override
@@ -99,6 +75,7 @@ public class AmazonFeed extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+        new GetArticleData().execute();
 
         //set the refresh elements
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
@@ -118,7 +95,7 @@ public class AmazonFeed extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        prepareAlbums();
+        //prepareAlbums();
         return view;
 
     }
@@ -127,7 +104,7 @@ public class AmazonFeed extends Fragment {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
         // getHomeTimeline is an example endpoint.
-      adapter.change();
+        //adapter.change();
         swipeContainer.setRefreshing(false);
     }
 
@@ -147,54 +124,52 @@ public class AmazonFeed extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    /**
-     * Adding few albums for testing
-     */
-    private void prepareAlbums() {
-        int[] covers = new int[]{
-                R.drawable.album1,
-                R.drawable.album2,
-                R.drawable.album3,
-                R.drawable.album4,
-                R.drawable.album5,
-                R.drawable.album6,
-                R.drawable.album7,
-                R.drawable.album8,
-                R.drawable.album9,
-                R.drawable.album10,
-                R.drawable.album11};
+    private class GetArticleData extends AsyncTask<Void, Void, Void> {
 
-        Album a = new Album("True Romance", 13, covers[0]);
-        albumList.add(a);
+        final private String url = "https://brxj3qfbs6.execute-api.us-west-2.amazonaws.com/Beta?q=TEST";
 
-        a = new Album("Xscpae", 8, covers[1]);
-        albumList.add(a);
+        @Override
+        protected Void doInBackground(Void... voids) {
+            HttpHandler httpHandler = new HttpHandler();
+            String responseArticle = httpHandler.makeServiceCall(url);
 
-        a = new Album("Maroon 5", 11, covers[2]);
-        albumList.add(a);
+            if(responseArticle != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseArticle);
+                    JSONObject successHit = (JSONObject) jsonObject.get("hits");
+                    int count = successHit.getInt("found");
 
-        a = new Album("Born to Die", 12, covers[3]);
-        albumList.add(a);
+                    if(count != 0) {
+                        JSONArray list = (JSONArray) successHit.getJSONArray("hit");
+                        for(int i = 0; i < list.length(); i++) {
+                            JSONObject articleJSON = ((JSONObject) list.get(i)).getJSONObject
+                                    ("fields");
+                            String title = articleJSON.getString("title");
+                            String description = articleJSON.getString("description");
+                            String productImageURL = null;
+                            try {
+                                productImageURL = articleJSON.getString("product_image_uri");
+                            } catch(JSONException e) {
+                                continue;
+                            }
+                            String asin = articleJSON.getString("asin");
+                            Article article = new Article(title, productImageURL, description, asin);
+                            albumList.add(article);
+                        }
+                    }
 
-        a = new Album("Honeymoon", 14, covers[4]);
-        albumList.add(a);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
 
-        a = new Album("I Need a Doctor", 1, covers[5]);
-        albumList.add(a);
-
-        a = new Album("Loud", 11, covers[6]);
-        albumList.add(a);
-
-        a = new Album("Legend", 14, covers[7]);
-        albumList.add(a);
-
-        a = new Album("Hello", 11, covers[8]);
-        albumList.add(a);
-
-        a = new Album("Greatest Hits", 17, covers[9]);
-        albumList.add(a);
-
-        adapter.notifyDataSetChanged();
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     /**
