@@ -58,16 +58,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class KindleViewHolder extends RecyclerView.ViewHolder {
         public ImageView bookCover;
-        public TextView progress, dummy;
+        public TextView progress;
 
         public KindleViewHolder(View view) {
             super(view);
             progress = view.findViewById(R.id.progress);
             bookCover = view.findViewById(R.id.bookCover);
-            dummy = view.findViewById(R.id.dummy);
             progress.setTypeface(Typeface.DEFAULT_BOLD);
             progress.setTextSize(20);
-            dummy.setTextSize(20);
         }
     }
 
@@ -200,7 +198,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         else if(holder instanceof KindleViewHolder) {
             final KindleInfo data = (KindleInfo) dataList.get(position);
             ((KindleViewHolder) holder).progress.setText("Book progress is: " + Integer.toString(data.getProgress()));
-            ((KindleViewHolder) holder).dummy.setText("");
 
             Glide.with(mContext)
                     .load(data.getBookCover())
