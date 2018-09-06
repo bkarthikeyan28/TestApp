@@ -206,6 +206,15 @@ public class AmazonFeed extends Fragment {
                 }
             }
 
+            //populate weather
+            try {
+                WeatherInfo weatherInfo = FetchWeather.fetchWeather(getContext(), "London");
+                albumList.add(weatherInfo);
+            } catch (Exception e){
+                //supressing all the exceptions
+                e.printStackTrace();
+            }
+
             return null;
         }
 

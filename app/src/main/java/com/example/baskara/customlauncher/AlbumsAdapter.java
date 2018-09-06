@@ -3,6 +3,7 @@ package com.example.baskara.customlauncher;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -83,6 +84,23 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public class WeatherViewHolder extends RecyclerView.ViewHolder {
+        TextView cityField;
+        TextView updatedField;
+        TextView detailsField;
+        TextView currentTemperatureField;
+        TextView weatherIcon;
+
+        public WeatherViewHolder(View view) {
+            super(view);
+            cityField = view.findViewById(R.id.city_field);
+            updatedField = view.findViewById(R.id.updated_field);
+            detailsField = view.findViewById(R.id.details_field);
+            currentTemperatureField = view.findViewById(R.id.current_temperature_field);
+            weatherIcon = view.findViewById(R.id.weather_icon);
+        }
+    }
+
 
     public AlbumsAdapter(Context mContext, List<Data> dataList) {
         this.mContext = mContext;
@@ -106,6 +124,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.kindle_card, parent, false);
             return new KindleViewHolder(itemView);
+        }
+        else if(viewType == 4) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.weather_card, parent, false);
+            return new WeatherViewHolder(itemView);
         }
 
         return null;
@@ -149,7 +172,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-        } else if (holder instanceof VideoViewHolder) {
+        }
+        else if (holder instanceof VideoViewHolder) {
             final Video data = (Video)dataList.get(position);
             ((VideoViewHolder)holder).title.setText(data.getTitle());
             Glide.with(mContext)
@@ -172,7 +196,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 }
             });
-        } else if(holder instanceof KindleViewHolder) {
+        }
+        else if(holder instanceof KindleViewHolder) {
             final KindleInfo data = (KindleInfo) dataList.get(position);
             ((KindleViewHolder) holder).progress.setText("Book progress is: " + Integer.toString(data.getProgress()));
             ((KindleViewHolder) holder).dummy.setText("");
@@ -191,6 +216,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
+        }
+        else if(holder instanceof WeatherViewHolder) {
+            final WeatherInfo data = (WeatherInfo) dataList.get(position);
+            ((WeatherViewHolder) holder).cityField.setText(data.getCityField());
+            ((WeatherViewHolder) holder).currentTemperatureField.setText(data.getCurrentTemperatureField());
+            ((WeatherViewHolder) holder).detailsField.setText(data.getDetailsField());
+            ((WeatherViewHolder) holder).weatherIcon.setText(data.getWeatherIcon());
+            ((WeatherViewHolder) holder).updatedField.setText(data.getUpdatedField());
         }
     }
 

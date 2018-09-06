@@ -23,6 +23,16 @@
     <string name="buy_1">Buy and Own</string>
     <string name="buy_2">AT $9.99</string>
     <string name="movie">Movie</string>
+    <string name="weather_id">b6907d289e10d714a6e88b30761fae22</string>
+    <string name="weather_sunny">&#xf00d;</string>
+    <string name="weather_clear_night">&#xf02e;</string>
+
+    <string name="weather_foggy">&#xf014;</string>
+    <string name="weather_cloudy">&#xf013;</string>
+    <string name="weather_rainy">&#xf019;</string>
+    <string name="weather_snowy">&#xf01b;</string>
+    <string name="weather_thunder">&#xf01e;</string>
+    <string name="weather_drizzle">&#xf01c;</string>
 
     <!-- Error messages -->
     <string name="error_fragment_message">An error occurred</string>
