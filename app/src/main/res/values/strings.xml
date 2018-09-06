@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomLauncher</string>
+    <string name="app_name">Custom Launcher</string>
     <string name="title_activity_app_drawer">AppDrawer</string>
 
     <!-- TODO: Remove or change this placeholder text -->

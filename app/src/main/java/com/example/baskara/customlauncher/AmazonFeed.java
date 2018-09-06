@@ -66,7 +66,7 @@ public class AmazonFeed extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.swipe_refresh_layout, container, false);
+        View view = inflater.inflate(R.layout.activity_scrolling, container, false);
         recyclerView = view.findViewById(R.id.rvItems);
 
         albumList = new ArrayList<>();
@@ -81,22 +81,22 @@ public class AmazonFeed extends Fragment {
         new GetArticleData().execute();
 
         //set the refresh elements
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                fetchTimelineAsync(0);
-            }
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+//        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//        // Setup refresh listener which triggers new data loading
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // Your code to refresh the list here.
+//                // Make sure you call swipeContainer.setRefreshing(false)
+//                // once the network request has completed successfully.
+//                fetchTimelineAsync(0);
+//            }
+//        });
+//        // Configure the refreshing colors
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
 
         //prepareAlbums();
         return view;
