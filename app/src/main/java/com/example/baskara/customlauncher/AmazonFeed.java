@@ -19,6 +19,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +54,7 @@ public class AmazonFeed extends Fragment {
     private AlbumsAdapter adapter;
     private List<Data> albumList;
     View pb;
+
     private OnFragmentInteractionListener mListener;
 
     private SwipeRefreshLayout swipeContainer;
@@ -100,37 +102,9 @@ public class AmazonFeed extends Fragment {
 
         new GetArticleData().execute();
 
-        //set the refresh elements
-//        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-//        // Setup refresh listener which triggers new data loading
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // Your code to refresh the list here.
-//                // Make sure you call swipeContainer.setRefreshing(false)
-//                // once the network request has completed successfully.
-//                fetchTimelineAsync(0);
-//            }
-//        });
-//        // Configure the refreshing colors
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-
-        //prepareAlbums();
         return view;
 
     }
-
-    public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
-        //adapter.change();
-        swipeContainer.setRefreshing(false);
-    }
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -228,8 +202,8 @@ public class AmazonFeed extends Fragment {
 
             //populate weather
             try {
-                WeatherInfo weatherInfo = FetchWeather.fetchWeather(getContext(), "London");
-                albumList.add(weatherInfo);
+                WeatherInfo weatherInfo = FetchWeather.fetchWeather(getContext(), "Chennai");
+                albumList.add(0, weatherInfo);
             } catch (Exception e){
                 //supressing all the exceptions
                 e.printStackTrace();
@@ -313,5 +287,11 @@ public class AmazonFeed extends Fragment {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    private class SpinnerAdapter {
+
+
+
     }
 }

@@ -95,7 +95,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             updatedField = view.findViewById(R.id.updated_field);
             detailsField = view.findViewById(R.id.details_field);
             currentTemperatureField = view.findViewById(R.id.current_temperature_field);
-            weatherIcon = view.findViewById(R.id.weather_icon);
         }
     }
 
@@ -219,7 +218,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((WeatherViewHolder) holder).cityField.setText(data.getCityField());
             ((WeatherViewHolder) holder).currentTemperatureField.setText(data.getCurrentTemperatureField());
             ((WeatherViewHolder) holder).detailsField.setText(data.getDetailsField());
-            ((WeatherViewHolder) holder).weatherIcon.setText(data.getWeatherIcon());
             ((WeatherViewHolder) holder).updatedField.setText(data.getUpdatedField());
         }
     }

@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class FetchWeather {
     private static final String OPEN_WEATHER_MAP_API =
-            "https://samples.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
+            "https://openweathermap.org/data/2.5/weather?q=%s&appid=%s";
 
     private static JSONObject getJSON(Context context, String city){
         try {
