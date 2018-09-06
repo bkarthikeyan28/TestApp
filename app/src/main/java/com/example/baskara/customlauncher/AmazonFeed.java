@@ -94,7 +94,7 @@ public class AmazonFeed extends Fragment {
                     startActivity(intent);
                 } else {
                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse
-                            ("market://details?id=com.amazon.avod.thirdpartyclient"));
+                            ("market://details?id=com.amazon.dee.app"));
                     startActivity(marketIntent);
                 }
             }
