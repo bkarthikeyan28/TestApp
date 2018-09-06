@@ -52,7 +52,7 @@ public class AmazonFeed extends Fragment {
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
     private List<Data> albumList;
-
+    View pb;
     private OnFragmentInteractionListener mListener;
 
     private SwipeRefreshLayout swipeContainer;
@@ -77,6 +77,7 @@ public class AmazonFeed extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("");
+        pb = view.findViewById(R.id.loadingPanel);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,6 +265,7 @@ public class AmazonFeed extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             adapter.notifyDataSetChanged();
+            pb.setVisibility(View.GONE);
         }
     }
 
