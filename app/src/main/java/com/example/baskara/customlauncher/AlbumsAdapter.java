@@ -197,7 +197,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
         else if(holder instanceof KindleViewHolder) {
             final KindleInfo data = (KindleInfo) dataList.get(position);
-            ((KindleViewHolder) holder).progress.setText("Book progress is: " + Integer.toString(data.getProgress()));
+            ((KindleViewHolder) holder).progress.setText(Integer.toString(data.getProgress()) + "%");
 
             Glide.with(mContext)
                     .load(data.getBookCover())
