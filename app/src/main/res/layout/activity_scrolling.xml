@@ -46,6 +46,6 @@
         app:backgroundTint="@color/lb_preference_item_category_text_color"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@mipmap/alexa_icon_round" />
+        app:srcCompat="@mipmap/alexa_icon" />
 
 </android.support.design.widget.CoordinatorLayout>

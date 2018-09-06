@@ -1,15 +1,20 @@
 package com.example.baskara.customlauncher;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +73,20 @@ public class AmazonFeed extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_scrolling, container, false);
         recyclerView = view.findViewById(R.id.rvItems);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle("");
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName("com.amazon.dee.app", "com.amazon.dee.app" +
+                        ".ui.voice.VoiceActivity"));
+                startActivity(intent);
+            }
+        });
 
         albumList = new ArrayList<>();
         adapter = new AlbumsAdapter(this.getContext(), albumList);
