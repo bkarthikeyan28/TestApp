@@ -47,6 +47,21 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public class KindleViewHolder extends RecyclerView.ViewHolder {
+        public ImageView bookCover;
+        public TextView progress, dummy;
+
+        public KindleViewHolder(View view) {
+            super(view);
+            progress = view.findViewById(R.id.progress);
+            bookCover = view.findViewById(R.id.bookCover);
+            dummy = view.findViewById(R.id.dummy);
+            progress.setTypeface(Typeface.DEFAULT_BOLD);
+            progress.setTextSize(20);
+            dummy.setTextSize(20);
+        }
+    }
+
 
     public AlbumsAdapter(Context mContext, List<Data> dataList) {
         this.mContext = mContext;
@@ -62,8 +77,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .inflate(R.layout.article_card, parent, false);
             return new ArticleViewHolder(itemView);
         }
+        else if(viewType == 1) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.kindle_card, parent, false);
+            return new KindleViewHolder(itemView);
+        }
 
-        return new ArticleViewHolder(itemView);
+        return new KindleViewHolder(itemView);
     }
 
     @Override
@@ -77,6 +97,27 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Glide.with(mContext)
                     .load(data.getThumbnail())
                     .into(((ArticleViewHolder) holder).thumbnail);
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, WebviewActivity.class);
+                    intent.putExtra("asin", data.getAsin());
+                    mContext.startActivity(intent);
+                }
+            });
+
+        }
+
+        else if(holder instanceof KindleViewHolder) {
+            final KindleInfo data = (KindleInfo) dataList.get(position);
+            ((KindleViewHolder) holder).progress.setText("Book progress is: " + Integer.toString(data.getProgress()));
+            ((KindleViewHolder) holder).dummy.setText("");
+
+            Glide.with(mContext)
+                    .load(data.getBookCover())
+                    .into(((KindleViewHolder) holder).bookCover);
 
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {

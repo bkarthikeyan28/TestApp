@@ -19,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,15 +136,15 @@ public class AmazonFeed extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             String responseArticle = httpHandler.makeServiceCall(url);
 
-            if(responseArticle != null) {
+            if (responseArticle != null) {
                 try {
                     JSONObject jsonObject = new JSONObject(responseArticle);
                     JSONObject successHit = (JSONObject) jsonObject.get("hits");
                     int count = successHit.getInt("found");
 
-                    if(count != 0) {
+                    if (count != 0) {
                         JSONArray list = (JSONArray) successHit.getJSONArray("hit");
-                        for(int i = 0; i < list.length(); i++) {
+                        for (int i = 0; i < list.length(); i++) {
                             JSONObject articleJSON = ((JSONObject) list.get(i)).getJSONObject
                                     ("fields");
                             String title = articleJSON.getString("title");
@@ -149,7 +152,7 @@ public class AmazonFeed extends Fragment {
                             String productImageURL = null;
                             try {
                                 productImageURL = articleJSON.getString("product_image_uri");
-                            } catch(JSONException e) {
+                            } catch (JSONException e) {
                                 continue;
                             }
                             String asin = articleJSON.getString("asin");
@@ -162,7 +165,41 @@ public class AmazonFeed extends Fragment {
                     e.printStackTrace();
                 }
             }
+
+            //populate kindle information
+            try {
+                KindleInfo kindleInfo = readKindleFile();
+                albumList.add(kindleInfo);
+            } catch (Exception e) {
+                //supressing all the exceptions
+                e.printStackTrace();
+            }
+
+
             return null;
+        }
+
+        private KindleInfo readKindleFile() {
+
+            File root = android.os.Environment.getExternalStorageDirectory();
+            File file = new File(root.getAbsolutePath() + "/myData.txt");
+            String content = null;
+            BufferedReader br = null;
+            try {
+                br = new BufferedReader(new FileReader(file));
+                content = br.readLine();
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String progress = content.split(",")[1];
+            String asin = content.split(",")[0];
+            int num = 0;
+            if (progress != null) {
+                num = Integer.parseInt(progress);
+            }
+            return new KindleInfo(root.getAbsolutePath() + "/cover", num, asin);
         }
 
         @Override
