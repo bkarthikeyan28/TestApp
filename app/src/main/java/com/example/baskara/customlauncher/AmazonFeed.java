@@ -216,6 +216,9 @@ public class AmazonFeed extends Fragment {
                 e.printStackTrace();
             }
 
+            //populate order
+            albumList.add(1,new OrderInfo());
+
             return null;
         }
 

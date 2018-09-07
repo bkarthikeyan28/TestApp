@@ -90,6 +90,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public class OrderViewHolder extends RecyclerView.ViewHolder {
+        public OrderViewHolder(View view) {
+            super(view);
+        }
+    }
+
 
     public AlbumsAdapter(Context mContext, List<Data> dataList) {
         this.mContext = mContext;
@@ -118,6 +124,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.weather_card, parent, false);
             return new WeatherViewHolder(itemView);
+        }
+        else if(viewType == 6) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.order_card, parent, false);
+            return new OrderViewHolder(itemView);
         }
 
         return null;
@@ -210,6 +221,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((WeatherViewHolder) holder).cityField.setText(data.getCityField());
             ((WeatherViewHolder) holder).currentTemperatureField.setText(data.getCurrentTemperatureField());
             ((WeatherViewHolder) holder).detailsField.setText(data.getDetailsField());
+        }
+        else if(holder instanceof OrderViewHolder) {
+            final OrderInfo data = (OrderInfo) dataList.get(position);
         }
     }
 
