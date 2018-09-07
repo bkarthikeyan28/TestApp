@@ -28,18 +28,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
-        public TextView title, description;
+        public TextView title, description, ctype;
 
         public ArticleViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.title);
             description = view.findViewById(R.id.description);
             thumbnail = view.findViewById(R.id.thumbnail);
+            ctype = view.findViewById(R.id.ctype);
             title.setTypeface(Typeface.DEFAULT_BOLD);
             title.setTextSize(20);
             description.setTextSize(15);
             setGoogleSansBold(title);
             setGoogleSans(description);
+            setGoogleSans(ctype);
         }
     }
 
@@ -60,7 +62,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class VideoViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
-        public TextView title;
+        public TextView title,ctype1;
 
         public VideoViewHolder(View view) {
             super(view);
@@ -69,6 +71,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             title.setTextSize(15);
             title.setTypeface(Typeface.DEFAULT_BOLD);
             setGoogleSansBold(title);
+            ctype1 = view.findViewById(R.id.ctype1);
+            setGoogleSans(ctype1);
         }
     }
 
