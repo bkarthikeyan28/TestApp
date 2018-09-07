@@ -131,7 +131,7 @@ public class AmazonFeed extends Fragment {
     private class GetArticleData extends AsyncTask<Void, Void, Void> {
 
         final private String urlArticle = "https://brxj3qfbs6.execute-api.us-west-2.amazonaws" +
-                ".com/Beta?q=TEST";
+                ".com/Beta?q=ARTCLH*";
         final private String urlMovies = "https://6e45f4em8g.execute-api.us-east-1.amazonaws.com/beta/stories/video";
         final private String urlMusic = "";
 
@@ -149,7 +149,7 @@ public class AmazonFeed extends Fragment {
 
                     if (count != 0) {
                         JSONArray list = (JSONArray) successHit.getJSONArray("hit");
-                        for(int i = 4; i < list.length(); i++) {
+                        for(int i = 0; i < list.length(); i++) {
                             JSONObject articleJSON = ((JSONObject) list.get(i)).getJSONObject
                                     ("fields");
                             String title = articleJSON.getString("title");

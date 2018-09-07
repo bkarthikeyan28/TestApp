@@ -32,7 +32,7 @@ public class WebviewActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             url = extras.getString("asin");
-            url = "https://articles.integ.amazon.com/kindle-dbs/arp/" + url;
+            url = "https://www.amazon.com/kindle-dbs/arp/" + url;
         }
 
         WebView webView = findViewById(R.id.webView);
