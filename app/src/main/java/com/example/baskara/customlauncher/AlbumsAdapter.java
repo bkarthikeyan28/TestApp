@@ -228,6 +228,22 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
         else if(holder instanceof OrderViewHolder) {
             final OrderInfo data = (OrderInfo) dataList.get(position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkAppPresent("com.amazon.mShop.android.shopping")) {
+                        Intent intent = new Intent();
+                        //intent.setData(Uri.parse(uri));
+                        intent.setComponent(new ComponentName("com.amazon.mShop.android.shopping",
+                                "com.amazon.mShop.order.ViewOrderActivity"));
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse
+                                ("market://details?id=com.amazon.mShop.android.shopping"));
+                        mContext.startActivity(marketIntent);
+                    }
+                }
+            });
         }
     }
 
