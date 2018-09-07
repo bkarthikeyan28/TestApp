@@ -1,8 +1,5 @@
 package com.example.baskara.customlauncher;
 
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
-import android.content.ComponentName;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,29 +7,18 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Glide.*;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
-import java.util.Random;
 
 public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -52,6 +38,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             title.setTypeface(Typeface.DEFAULT_BOLD);
             title.setTextSize(20);
             description.setTextSize(15);
+            setGoogleSansBold(title);
+            setGoogleSans(description);
         }
     }
 
@@ -66,6 +54,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             bookCover = view.findViewById(R.id.bookCover);
             progress.setTypeface(Typeface.DEFAULT_BOLD);
             progress.setTextSize(20);
+            setGoogleSansBold(progress);
         }
     }
 
@@ -79,6 +68,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             thumbnail = view.findViewById(R.id.thumbnail);
             title.setTextSize(15);
             title.setTypeface(Typeface.DEFAULT_BOLD);
+            setGoogleSansBold(title);
         }
     }
 
@@ -94,6 +84,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             cityField = view.findViewById(R.id.city_field);
             detailsField = view.findViewById(R.id.details_field);
             currentTemperatureField = view.findViewById(R.id.current_temperature_field);
+
+            setGoogleSansBold(cityField, currentTemperatureField);
+            setGoogleSans(detailsField);
         }
     }
 
@@ -217,6 +210,26 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((WeatherViewHolder) holder).cityField.setText(data.getCityField());
             ((WeatherViewHolder) holder).currentTemperatureField.setText(data.getCurrentTemperatureField());
             ((WeatherViewHolder) holder).detailsField.setText(data.getDetailsField());
+        }
+    }
+
+    private void setGoogleSans(TextView... views) {
+        Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "fonts/googlesans_regular" +
+                ".ttf");
+        for (TextView view : views) {
+            if (view != null) {
+                view.setTypeface(tf);
+            }
+        }
+    }
+
+    private void setGoogleSansBold(TextView... views) {
+        Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "fonts/googlesans-bold" +
+                ".ttf");
+        for (TextView view : views) {
+            if (view != null) {
+                view.setTypeface(tf);
+            }
         }
     }
 
