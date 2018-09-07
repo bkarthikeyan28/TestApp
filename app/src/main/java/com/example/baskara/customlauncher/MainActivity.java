@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.mPager);
         PagerAdapter pagerAdapter = new HomeScreenAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(1);
     }
 
 

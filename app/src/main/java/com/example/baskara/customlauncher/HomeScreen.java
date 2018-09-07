@@ -1,12 +1,19 @@
 package com.example.baskara.customlauncher;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -64,7 +71,32 @@ public class HomeScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
+
+        PackageManager pm = getContext().getPackageManager();
+
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        for(ResolveInfo ri:allApps) {
+            AppInfo app = new AppInfo();
+            if(ri.activityInfo.packageName.equals("com.google.android.dialer")) {
+                Button button1 = view.findViewById(R.id.button1);
+                button1.setBackground(ri.activityInfo.loadIcon(pm));
+            } else if (ri.activityInfo.packageName.equals("com.google.android.apps.messaging")) {
+                Button button3 = view.findViewById(R.id.button3);
+                button3.setBackground(ri.activityInfo.loadIcon(pm));
+            } else if (ri.activityInfo.packageName.equals("com.android.chrome")) {
+                Button button4 = view.findViewById(R.id.button4);
+                button4.setBackground(ri.activityInfo.loadIcon(pm));
+            } else if (ri.activityInfo.packageName.equals("com.google.android.GoogleCamera")) {
+                Button button5 = view.findViewById(R.id.button5);
+                button5.setBackground(ri.activityInfo.loadIcon(pm));
+            }
+        }
+
+        return view;
     }
 
     /**
