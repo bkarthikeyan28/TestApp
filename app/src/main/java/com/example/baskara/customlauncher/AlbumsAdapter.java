@@ -94,6 +94,22 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public class MusicViewHolder extends RecyclerView.ViewHolder {
+        public ImageView thumbnail;
+        public TextView title,ctype1;
+
+        public MusicViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.description);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            title.setTextSize(15);
+            title.setTypeface(Typeface.DEFAULT_BOLD);
+            setGoogleSansBold(title);
+            ctype1 = view.findViewById(R.id.ctype1);
+            setGoogleSans(ctype1);
+        }
+    }
+
     public class OrderViewHolder extends RecyclerView.ViewHolder {
         public OrderViewHolder(View view) {
             super(view);
@@ -133,6 +149,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.order_card, parent, false);
             return new OrderViewHolder(itemView);
+        } else if(viewType == 10) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.music_card, parent, false);
+            return new MusicViewHolder(itemView);
         }
 
         return null;
@@ -235,13 +255,36 @@ public class AlbumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         Intent intent = new Intent();
                         //intent.setData(Uri.parse(uri));
                         intent.setComponent(new ComponentName("com.amazon.mShop.android.shopping",
-                                "com.amazon.mShop.order.ViewOrderActivity"));
+                                "com.amazon.mShop.splashscreen.StartupActivity"));
                         mContext.startActivity(intent);
                     } else {
                         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse
                                 ("market://details?id=com.amazon.mShop.android.shopping"));
                         mContext.startActivity(marketIntent);
                     }
+                }
+            });
+        } else if(holder instanceof MusicViewHolder) {
+            final Music music = (Music)dataList.get(position);
+            ((MusicViewHolder)holder).title.setText(music.getTitle());
+            Glide.with(mContext)
+                    .load(music.getImageUri())
+                    .into(((MusicViewHolder) holder).thumbnail);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(checkAppPresent("com.amazon.mp3")) {
+                        Intent intent = new Intent();
+                        //intent.setData(Uri.parse(uri));
+                        intent.setComponent(new ComponentName("com.amazon.mp3",
+                                "com.amazon.mp3.client.activity.LauncherActivity"));
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse
+                                ("market://details?id=com.amazon.mp3"));
+                        mContext.startActivity(marketIntent);
+                    }
+
                 }
             });
         }

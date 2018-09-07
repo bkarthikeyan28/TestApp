@@ -133,7 +133,7 @@ public class AmazonFeed extends Fragment {
         final private String urlArticle = "https://brxj3qfbs6.execute-api.us-west-2.amazonaws" +
                 ".com/Beta?q=ARTCLH*";
         final private String urlMovies = "https://6e45f4em8g.execute-api.us-east-1.amazonaws.com/beta/stories/video";
-        final private String urlMusic = "";
+        final private String urlMusic = "https://6e45f4em8g.execute-api.us-east-1.amazonaws.com/beta/stories/music";
 
 
         @Override
@@ -199,6 +199,33 @@ public class AmazonFeed extends Fragment {
 
                             Video video = new Video(title, imageURI, asin);
                             albumList.add(video);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String responseMusic = httpHandler.makeServiceCall(urlMusic);
+
+            if(responseMovies != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseMusic);
+                    int count = jsonObject.getInt("Count");
+
+                    if(count != 0) {
+                        JSONArray list = (JSONArray)jsonObject.getJSONArray("Items");
+                        for(int i = 0; i < count; i++) {
+                            String imageURI = ((JSONObject)list.get(i)).getJSONObject
+                                    ("imageurl").getString("S");
+                            String title = ((JSONObject)list.get(i)).getJSONObject("title")
+                                    .getString("S");
+                            String asin = (((JSONObject) list.get(i)).getJSONObject
+                                    ("redirecturl")).getString("S");
+
+                            Music music = new Music(title, imageURI, asin);
+                            albumList.add(music);
                         }
                     }
 
